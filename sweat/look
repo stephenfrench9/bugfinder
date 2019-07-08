@@ -1,0 +1,16 @@
+# This function accepts a number as an input, and then surfs to an ip address for a kubernetes service.
+# run `kubectl get services`, and then, in the list of services,  count to the service that you would like to visit. 
+look() {
+    num1="$(($1-1))"
+    export ings=$(kubectl get services -o=jsonpath='{.items['$num1'].status.loadBalancer.ingress[*].hostname}')
+    export names=$(kubectl get services -o=jsonpath='{.items['$num1'].metadata.name}')
+    export ports=$(kubectl get services -o=jsonpath='{.items['$num1'].spec.ports[0].port}')
+    echo $ings:$ports
+    echo $names
+    /usr/bin/open -a "/Applications/Google Chrome.app" 'http://'$ings:$ports/format?helloTo=rick
+
+    magic=10
+    if [ $num1 -eq $magic ]; then
+        /usr/bin/open -a "/Applications/Google Chrome.app" 'http://'$ings:$ports/format?helloTo=rick
+    fi
+}
