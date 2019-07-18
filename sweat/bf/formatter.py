@@ -4,8 +4,14 @@ from flask import Flask
 
 app = Flask(__name__)
 
+# Hard-coded Bugfinder parameters.
+# How many traces in the past does Bugfinder analyze?
+TRACE_WINDOW = 1000  # traces
+# What is the definition of a slow response?
+THRESHOLD = 60000  # milliseconds
 
-def powerset(seq):
+
+def power_set(seq):
     """
     Returns all the subsets of this set. This is a generator.
     """
@@ -13,7 +19,7 @@ def powerset(seq):
         yield seq
         yield []
     else:
-        for item in powerset(seq[1:]):
+        for item in power_set(seq[1:]):
             yield [seq[0]] + item
             yield item
 
@@ -22,15 +28,9 @@ def powerset(seq):
 def conditional_distributions():
     es = Elasticsearch([{'host': 'elasticsearch', 'port': 9200}])
 
-    # Hard-coded Bugfinder parameters.
-    # How many traces in the past does Bugfinder analyze? What is the
-    # definition of a slow response?
-    trace_window = 1000  # traces
-    threshold = 60000  # milliseconds
-
     d = str(datetime.datetime.utcnow()).split()[0]
     # get list of all traces
-    res = es.search(index='jaeger-span-' + d, size=trace_window)
+    res = es.search(index='jaeger-span-' + d, size=TRACE_WINDOW)
     all_traces = res['hits']['hits']
 
     # Break lists of traces into lists of services, trace_ids, and spans_ids.
@@ -54,7 +54,7 @@ def conditional_distributions():
     for i in range(len(traces)):
         search = {"query": {"match": {'traceID': traces[i]}}}
         res = es.search(index='jaeger-span-' + d, body=search,
-                        size=trace_window)
+                        size=TRACE_WINDOW)
         all_traces = res['hits']['hits']  # all the spans to do with this trace
 
         for trace in all_traces:
@@ -70,7 +70,7 @@ def conditional_distributions():
     for trace in events.keys():
         slow = False
         for service in events[trace].keys():
-            if events[trace][service] > threshold:
+            if events[trace][service] > THRESHOLD:
                 slow = True
         events[trace]['slow'] = slow
 
@@ -89,7 +89,7 @@ def conditional_distributions():
 
         # Generate all combinations of services for which you want
         # performance metrics.
-        power_sets = powerset(traces_in_span)
+        power_sets = power_set(traces_in_span)
         marginals_args = []
         marginal_arg_set = "initialized"
         while marginal_arg_set != "done":
