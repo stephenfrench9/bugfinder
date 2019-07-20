@@ -26,12 +26,19 @@ def power_set(seq):
 
 @app.route("/format")
 def conditional_distributions():
+
+
     es = Elasticsearch([{'host': 'elasticsearch', 'port': 9200}])
 
     d = str(datetime.datetime.utcnow()).split()[0]
     # get list of all traces
     res = es.search(index='jaeger-span-' + d, size=TRACE_WINDOW)
+
     all_traces = res['hits']['hits']
+    app.logger.debug("all_traces: %s" % type(all_traces))
+    app.logger.debug("all_traces: %s" % len(all_traces))
+    app.logger.debug("all_traces[0]: %s" % type(all_traces[0]))
+
 
     # Break lists of traces into lists of services, trace_ids, and spans_ids.
     services = []
@@ -138,7 +145,8 @@ def conditional_distributions():
                  "P(" + str(services) + ") = " + \
                  str(round(diagnosis[-1], 2)) + \
                  "<br/>"
-
+    app.logger.debug(result[0:120])
+    return "that day"
     return '<font size="22">' + result + '</font>'
 
 
