@@ -137,7 +137,7 @@ def conditional_distributions():
 
     # Place single services at the front of the list, and larger combinations
     # of services at the end.
-    diagnosis = sorted(keys, key=len)
+    diagnosis = sorted(keys, key=lambda x : (len(x), -x[-1]))
 
     # Build the final result string to be returned.
     result = ""
