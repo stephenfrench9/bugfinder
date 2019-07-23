@@ -1,4 +1,5 @@
 import datetime
+import elasticsearch
 from elasticsearch import Elasticsearch
 from flask import Flask
 
@@ -32,7 +33,10 @@ def conditional_distributions():
 
     d = str(datetime.datetime.utcnow()).split()[0]
     # get list of all traces
-    res = es.search(index='jaeger-span-' + d, size=TRACE_WINDOW)
+    try:
+        res = es.search(index='jaeger-span-' + d, size=TRACE_WINDOW)
+    except elasticsearch.exceptions.NotFoundError:
+        return "There are no traces stored in the elasticsearch backend."
 
     all_traces = res['hits']['hits']
 
