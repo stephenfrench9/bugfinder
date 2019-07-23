@@ -29,7 +29,7 @@ def http_get(port, path, param, value):
     return r.text
 
 
-@app.route("/format")
+@app.route("/")
 def format():
     print("format function in aserv is executing")
     start = time.time()

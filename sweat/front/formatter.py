@@ -36,7 +36,7 @@ def format():
             start = time.time()
             try:
                 android_url = 'http://app-android:%s/%s'
-                android_response = http_get(android_url, 5000, 'format', 'helloTo', hello_to)
+                android_response = http_get(android_url, 5000, '', 'helloTo', hello_to)
             except:
                 android_response = hello_to + ",failed request"
             android_response = android_response.split(",")
@@ -51,7 +51,7 @@ def format():
             try:
                 start = time.time()
                 web_url = 'http://app-ios:%s/%s'
-                web_response = http_get(web_url, 5000, 'format', 'helloTo', hello_to)
+                web_response = http_get(web_url, 5000, '', 'helloTo', hello_to)
             except:
                 web_response = hello_to + ",failed request"
             web_response = web_response.split(",")
