@@ -10,7 +10,7 @@ app = Flask(__name__)
 tracer = init_tracer('db2')
 
 
-@app.route("/format")
+@app.route("/")
 def format():
     span_ctx = tracer.extract(Format.HTTP_HEADERS, request.headers)
     span_tags = {tags.SPAN_KIND: tags.SPAN_KIND_RPC_SERVER}

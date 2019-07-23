@@ -27,10 +27,13 @@ def power_set(seq):
 
 @app.route("/format")
 def conditional_distributions():
-    app.logger.debug("Guten Morgen")
-
+    """
+    reads the elasticsearch backend to get all the raw trace datae. Processes
+    the data to find the probability of a slow response given the path
+    through the microservice architecture.
+    :return: The probabilities for a slow response.
+    """
     es = Elasticsearch([{'host': 'elasticsearch', 'port': 9200}])
-
     d = str(datetime.datetime.utcnow()).split()[0]
     # get list of all traces
     try:
@@ -67,7 +70,6 @@ def conditional_distributions():
         for trace in all_traces:
             service = trace['_source']['process']['serviceName']
             trace_id = trace['_source']['traceID']
-            # span_id = trace['_source']['spanID']
             duration = trace['_source']['duration']
             if trace_id not in events.keys():
                 events[trace_id] = {}
@@ -145,7 +147,7 @@ def conditional_distributions():
                  "P(" + str(services) + ") = " + \
                  str(round(diagnosis[-1], 2)) + \
                  "<br/>"
-
+    # Handle edge where all response times are acceptable
     if len(slow_counts) == 0:
         return "All microservices beat threshold times"
 

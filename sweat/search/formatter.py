@@ -40,7 +40,7 @@ def format():
         # if randint(1,20) == 4:
         # bug = True
         try:
-            hello_str = http_get(5000, 'format', 'helloTo', hello_to, bug)
+            hello_str = http_get(5000, '', 'helloTo', hello_to, bug)
             scope.span.log_kv({'event': 'search get request successful'})
         except:
             hello_str = hello_to
