@@ -29,7 +29,7 @@ def http_get(port, path, param, value, bug):
     return r.text
 
 
-@app.route("/format")
+@app.route("/")
 def format():
     global bug
     span_ctx = tracer.extract(Format.HTTP_HEADERS, request.headers)

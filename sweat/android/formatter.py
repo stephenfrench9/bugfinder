@@ -43,7 +43,7 @@ def format():
         scope.span.log_kv({'event': 'android process string', 'hello_to': hello_to})
 
         try:
-            hello_str = http_get(5000, 'format', 'helloTo', hello_to)
+            hello_str = http_get(5000, '', 'helloTo', hello_to)
             scope.span.log_kv({'event': 'aserv', 'value': 'line 35'})
         except:
             print("aserv: The get request failed. no further modification to the string")

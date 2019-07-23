@@ -39,7 +39,7 @@ def format():
 
         hello_to = hello_to + ',ios'
         try:
-            hello_str = http_get(5000, 'format', 'helloTo', hello_to)
+            hello_str = http_get(5000, '', 'helloTo', hello_to)
             scope.span.log_kv({'event': 'ios', 'value': 'line 35'})
         except:
             print("ios: The get request failed. no further modification to the string")
