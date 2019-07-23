@@ -5,4 +5,4 @@ WORKDIR /app
 RUN source env/bin/activate
 
 ENTRYPOINT ["python"]
-CMD ["formatter.py"]
+CMD ["main.py"]

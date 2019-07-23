@@ -9,7 +9,7 @@ from random import randint
 
 app = Flask(__name__)
 tracer = init_tracer('search')
-bug = True
+bug = False
 
 
 def http_get(port, path, param, value, bug):

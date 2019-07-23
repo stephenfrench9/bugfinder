@@ -9,7 +9,7 @@ app = Flask(__name__)
 # How many traces in the past does Bugfinder analyze?
 TRACE_WINDOW = 1000  # traces
 # What is the definition of a slow response?
-THRESHOLD = 60000  # milliseconds
+THRESHOLD = 60000  # microseconds
 
 
 def power_set(seq):
@@ -28,7 +28,7 @@ def power_set(seq):
 @app.route("/format")
 def conditional_distributions():
     """
-    reads the elasticsearch backend to get all the raw trace datae. Processes
+    reads the elasticsearch backend to get all the raw trace data. Processes
     the data to find the probability of a slow response given the path
     through the microservice architecture.
     :return: The probabilities for a slow response.
@@ -137,7 +137,7 @@ def conditional_distributions():
 
     # Place single services at the front of the list, and larger combinations
     # of services at the end.
-    diagnosis = sorted(keys, key=lambda x : (len(x), -x[-1]))
+    diagnosis = sorted(keys, key=lambda x: (len(x), -x[-1]))
 
     # Build the final result string to be returned.
     result = ""

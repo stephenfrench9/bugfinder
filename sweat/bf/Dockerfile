@@ -6,4 +6,4 @@ RUN source env/bin/activate
 RUN pip install elasticsearch
 
 ENTRYPOINT ["python"]
-CMD ["formatter.py"]
+CMD ["main.py"]
