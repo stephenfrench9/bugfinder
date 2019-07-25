@@ -2,6 +2,6 @@
 *line.txt
 *.idea*
 bfenv/
-sweat/base/env*
+microservices/base/env*
 opentracing-tutorial
 jenkins-sand/base/env*
