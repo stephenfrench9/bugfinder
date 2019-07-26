@@ -2,13 +2,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: app-model
-  labels:
-    app: ape-model
 spec:
   ports:
   - port: 5000
   selector:
-    app: ape-model
+    app: model
 ---
 apiVersion: v1
 kind: Service
@@ -29,28 +27,26 @@ spec:
       targetPort: 8083
       name: three
   selector:
-    app: ape-model
+    app: model
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: model
-  labels:
-    app: ape-model
   annotations:
     "sidecar.jaegertracing.io/inject": "true"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ape-model
+      app: model
   template:
     metadata:
       labels:
-        app: ape-model
+        app: model
     spec:
       containers:
-      - name: ape-model
+      - name: model
         image: stephenfrench9/model:prod
         imagePullPolicy: Always
         ports:
