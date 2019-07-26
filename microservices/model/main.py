@@ -32,12 +32,14 @@ def http_get(port, path, param, value, bug):
 def format():
     span_ctx = tracer.extract(Format.HTTP_HEADERS, request.headers)
     span_tags = {tags.SPAN_KIND: tags.SPAN_KIND_RPC_SERVER}
+
     with tracer.start_active_span('request', child_of=span_ctx,
                                   tags=span_tags) as scope:
         hello_to = request.args.get('helloTo')
         hello_to = hello_to + ',model'
-        bug = request.args.get('bug')
+
         try:
+            bug = False
             hello_str = http_get(5000, '', 'helloTo', hello_to, bug)
         except:
             hello_str = hello_to
@@ -47,3 +49,9 @@ def format():
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')
+
+
+
+
+
+
