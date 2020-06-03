@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# stand up kubernetes namespace
 kubectl create namespace observability
 kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/crds/jaegertracing_v1_jaeger_crd.yaml
 kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/service_account.yaml
